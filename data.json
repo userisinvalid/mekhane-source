@@ -1,0 +1,6 @@
+{ 
+    "mekhane" : {
+        "scriptbans": [""],
+        "blacklist" : [""] 
+    }
+}
