@@ -220,10 +220,6 @@ client.on("message", async message => {
 				  	value: "Call someone hella gay." 
 				  },
 				  {
-				  	name: "math <add | sub | mult | div> <number1> <number2>",
-				  	value: "Perform simple mathematical operations (in development, could be broken)."
-				  },
-				  {
 				  	name: "gamertags <amount>",
 				  	value: "Generate xbox gamertags (Max amount is 10)."
 				  },
@@ -273,66 +269,6 @@ client.on("message", async message => {
 					message.channel.send("Please use something to call hella gay.")
 				}
 			}
-		break;
-		case "math": //i dont remember making this
-			let warning1 = "Numbers not detected, please try again.";
-		let warning2 = `Missing data, do \`${config.prefixes.mekhane}help\` for syntax.`;
-		let op = args[0];
-		let num1 = args[1];
-		let num2 = args[2];
-		switch(op) {
-			case "add":
-				if(isNaN(num1) == true ||isNaN(num2) == true) {
-					if(num1 !== undefined || num2 !== undefined) {
-						message.channel.send(warning1);
-					} else if(num1 == undefined || num2 == undefined) {
-						message.channel.send(warning2);
-					}
-				} else {
-					let add = parseInt(num1) + parseInt(num2);
-					message.channel.send(add);
-				}
-				break;
-			case "sub":
-				if(isNaN(num1) == true ||isNaN(num2) == true) {
-					if(num1 !== undefined || num2 !== undefined) {
-						message.channel.send(warning1);
-					} else if(num1 == undefined || num2 == undefined) {
-						message.channel.send(warning2);
-					}
-				} else {
-					let sub = parseInt(num1) - parseInt(num2);
-					message.channel.send(sub);
-				}
-				break;
-			case "mult":
-				if(isNaN(num1) == true ||isNaN(num2) == true) {
-					if(num1 !== undefined || num2 !== undefined) {
-						message.channel.send(warning1);
-					} else if(num1 == undefined || num2 == undefined) {
-						message.channel.send(warning2);
-					}
-				} else {
-					let mult = parseInt(num1) * parseInt(num2);
-					message.channel.send(mult);
-				}
-				break;
-			case "div":
-				if(isNaN(num1) == true ||isNaN(num2) == true) {
-					if(num1 !== undefined || num2 !== undefined) {
-						message.channel.send(warning1);
-					} else if(num1 == undefined || num2 == undefined) {
-						message.channel.send(warning2);
-					}
-				} else {
-					let div = parseInt(num1) / parseInt(num2);
-					message.channel.send(div);
-				}
-				break;
-			default:
-				message.channel.send(`incorrect syntax, do \`${config.prefixes.mekhane}help\` for syntax`);
-				break;
-		}
 		break;
 		case "say":
 			if(message.author.id == owner) {
