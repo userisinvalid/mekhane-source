@@ -1,15 +1,23 @@
+/*
+
+	The source code for this bot is unoptimized and sometimes unstable. Use and modify at your own risk. 
+	Some IDs need to be changed for the bot to work, please check very carefully before starting.
+	
+	Check the data.json and config.json files before starting. Place your bot token in config.json and set a prefix.
+
+*/
 const Discord = require("discord.js");
 const request = require("request");
 const config = require("./config.json");
 const embedcolor = 13376265;
-const silserv = "611952537624510648"; // your server ID
-const devserv = "682770896628219942"; // for dev builds
-const owner = "288054476680724482"; // your owner id
+const silserv = "SERV-ID"; // your server ID
+const devserv = "DEV-ID"; // for dev builds
+const owner = "BOT-OWNER"; // your user ID
 const client = new Discord.Client();
 const data = require("./data.json");
-const gnid = "675189026180956191"; //gamenight role id
-const vid = "611958152925020199"; //verified ID 
-const nicknames = ["bonk", "bruh", "NO SPECIAL CHARACTERS", "edgelord", "meme thief", "cringe deluxe", "gen rule 7", "stupid", "standard name", "nickname", "generic preset"];
+const gnid = "GN-ROLE-ID"; //gamenight role ID
+const vid = "VER-ROLE-ID"; //verified ID 
+const nicknames = ["bonk", "bruh", "NO SPECIAL CHARACTERS", "edgelord", "meme thief", "cringe deluxe", "gen rule 7", "stupid", "standard name", "nickname", "generic preset"]; //add your own if you want
 var powered = "stale memes"
 var latest; //stores the latest gamenight message
 
@@ -56,7 +64,7 @@ function verify(discid, chanid) { //verifies discord and roblox through eryn
 			let x = tryParseJSON(body);
 			if(x != false){
 				if(x.status == "ok"){
-					client.guilds.cache.get(silserv).members.cache.get(discid).roles.add("611958152925020199")
+					client.guilds.cache.get(silserv).members.cache.get(discid).roles.add(vid)
 					let vermsg = {
 						title: "Mekhane Verification",
 						description: `Verified as ${x.robloxUsername}`,
@@ -67,7 +75,7 @@ function verify(discid, chanid) { //verifies discord and roblox through eryn
 					};
 					client.users.cache.get(discid).createDM().then(dm => {dm.send({embed: vermsg})
 					.catch(error => {
-						if(error.code == "50007"){
+						if(error.code == "50007"){ //failed to DM
 							client.users.fetch(discid).then(dem => {
 								if(chanid != false){
 									let faildm = {
@@ -89,7 +97,7 @@ function verify(discid, chanid) { //verifies discord and roblox through eryn
 					if(chanid != false){
 						let failmsg = {
 							title: "Mekhane Verification",
-							description: `You are not verified, try again. For instructions, check <#659124299239784511>.`,
+							description: `You are not verified, try again. For instructions, check <#VER-INST-ID>.`, //put the verify instructions channel here
 							color: embedcolor,
 							footer: {
 								text: `powered by ${powered}`
@@ -104,12 +112,12 @@ function verify(discid, chanid) { //verifies discord and roblox through eryn
 
 process.on('unhandledRejection', error => {
 	console.error(`nonfatal error code ${error.code}`)
-	console.error('Unhandled promise rejection:', error); //for logging, you can remove it if you want
+	console.error('Unhandled promise rejection:', error); //for debugging, remove if needed
 });
 
 client.on("guildBanRemove", function(gld, usr) {
 	if(banfind(usr.id) == true){
-		client.guilds.cache.get(silserv).members.ban(usr.id, "Scriptbanned, do not unban.")
+		client.guilds.cache.get(silserv).members.ban(usr.id, "Scriptbanned, do not unban.") //done to counter corruption
 	}
 })
 
@@ -129,7 +137,7 @@ client.on('guildMemberAdd', async member => {
 					text: `powered by ${powered}`
 				},
 				thumbnail: {
-					url: "https://cdn.discordapp.com/attachments/681321171135758440/681321402326057041/scp_logo.png"
+					url: "https://cdn.discordapp.com/attachments/681321171135758440/681321402326057041/scp_logo.png" //you can change the image or remove it altogether
 				},
 				fields: [
 					{
@@ -140,13 +148,13 @@ client.on('guildMemberAdd', async member => {
 			};
 			let welcome = {
 				title: "Welcome to the server!",
-				description: "Welcome to silou34's roleplaying community! Make sure to verify and read the rules. Have fun!",
+				description: "Welcome to the community! Make sure to verify and read the rules. Have fun!", //you can change this
 				color: embedcolor,
 				footer: {
 					text: `powered by ${powered}`
 				},
 				thumbnail: {
-					url: "https://cdn.discordapp.com/attachments/681321171135758440/681321402326057041/scp_logo.png"
+					url: "https://cdn.discordapp.com/attachments/681321171135758440/681321402326057041/scp_logo.png" //you can change this
 				}
 			};
 			let ts = member.user.createdTimestamp;	
@@ -155,7 +163,7 @@ client.on('guildMemberAdd', async member => {
 				console.log(`kicked: ${member.user.username}#${member.user.discriminator}`);
 				await member.send({embed: kickembed}).catch(err => {
 					if(err.code == "50007") {
-						console.error(`failed to dm kick to ${member.user.username}#${member.user.discriminator}`)
+						console.error(`failed to dm kick to ${member.user.username}#${member.user.discriminator}`) //logging, not an error
 					}
 				})
 				await member.kick("Below age limit");
@@ -163,12 +171,12 @@ client.on('guildMemberAdd', async member => {
 				console.log(`joined: ${member.user.username}#${member.user.discriminator}`);
 				member.send({embed: welcome}).catch(err => {
 					if(err.code == "50007"){
-						console.error(`failed to dm welcome message to ${member.user.username}#${member.user.discriminator}`)
+						console.error(`failed to dm welcome message to ${member.user.username}#${member.user.discriminator}`) //logging, not an error
 					}
 				});
 				verify(member.id, false);
 				if(specialname(member.user.username) == true){
-					member.setNickname(nicknames[Math.floor(Math.random() * nicknames.length)])
+					member.setNickname(nicknames[Math.floor(Math.random() * nicknames.length)]) //used to check for special names, remove or comment to disable
 				}
 			}
 		})
@@ -183,11 +191,11 @@ client.on("message", async message => {
 		authname = message.author.username
 	}
 	if(specialname(authname) == true){
-	message.member.setNickname(nicknames[Math.floor(Math.random() * nicknames.length)])
-	}
-  	if(message.author.bot) return;
+	message.member.setNickname(nicknames[Math.floor(Math.random() * nicknames.length)]) 
+	} //removes special nick on message, remove or comment from here up to "var authname" to disable
+  	if(message.author.bot) return; //do not process bot messages
   	if(message.content.indexOf(config.prefixes.mekhane) !== 0) return;
-  	const args = message.content.slice(config.prefixes.mekhane.length).trim().split(/ +/g);
+  	const args = message.content.slice(config.prefixes.mekhane.length).trim().split(/ +/g); //command handler
  	const command = args.shift().toLowerCase();
 	switch(command){
 		case "help":
@@ -266,7 +274,7 @@ client.on("message", async message => {
 				}
 			}
 		break;
-		case "math":
+		case "math": //i dont remember making this
 			let warning1 = "Numbers not detected, please try again.";
 		let warning2 = `Missing data, do \`${config.prefixes.mekhane}help\` for syntax.`;
 		let op = args[0];
@@ -513,11 +521,11 @@ client.on("message", async message => {
 		break;
 		case "gamenight":
 			let auth = message.member.roles.cache;
-			if(!(auth.has("612261183164121105") || auth.has("611983676607168537"))) return; // is ds/gs?
+			if(!(auth.has("AUTH-ID-1") || auth.has("AUTH-ID-2"))) return; // does the caller have authorization? you can add your own role IDs
 			let gnm = args.join(" ")
 			let gncache = client.guilds.cache.get(silserv).channels.cache // the channels
-			let gnchat = gncache.get("759472068525162498") // game chat
-			let gncn = gncache.get("675186103258578954") // announcement
+			let gnchat = gncache.get("GN-CHAT-ID") // gamenight chat
+			let gncn = gncache.get("GN-ANN-ID") // gamenight announcement chat
 			if(!gnm){
 				message.channel.send("Please include your gamenight message.")
 			} else if (args.join(" ") == "end") {
@@ -535,4 +543,4 @@ client.on("message", async message => {
 	}	
 });
 
-client.login(config.tokens.mekhane);
+client.login(config.tokens.mekhane); //log into discord
