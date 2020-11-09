@@ -184,9 +184,11 @@ client.on('guildMemberAdd', async member => {
 });
 
 client.on("message", async message => {
-	var authname = message.member.nickname ?? message.author.username //null coalescing is pretty cool right?
-	if(specialname(authname) == true){
-	message.member.setNickname(nicknames[Math.floor(Math.random() * nicknames.length)]) //remove or comment out to disable nickname enforcing on message
+	if(message.member){
+		var authname = message.member.nickname ?? message.author.username
+		if(specialname(authname) == true){
+			message.member.setNickname(nicknames[Math.floor(Math.random() * nicknames.length)]) //remove or comment to disable nickname enforcing
+		}
 	}
   	if(message.author.bot) return; //do not process bot messages
   	if(message.content.indexOf(config.prefixes.mekhane) !== 0) return;
