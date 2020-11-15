@@ -462,15 +462,19 @@ client.on("message", async message => {
 			if(!gnm){
 				message.channel.send("Please include your gamenight message.")
 			} else if (args.join(" ") == "end") {
+				if(!latest){
+					message.channel.send("No gamenight message found.")
+					return
+				}
 				message.delete()
 				latest.delete()
-				message.channel.send("Gamenight concluded.")
+				message.channel.send(`Gamenight ended by ${message.author.username}#${message.author.discriminator}`)
 				gnchat.overwritePermissions([{id:vid, deny:["SEND_MESSAGES"]}])
 			} else {
 				message.delete();
 				gncn.send(`<@&${gnid}> ${gnm}`).then(msg => latest = msg)
 				gnchat.overwritePermissions([{id:vid, allow:["SEND_MESSAGES"]}])
-				message.channel.send("Gamenight sent!")
+				message.channel.send(`Gamenight started by ${message.author.username}#${message.author.discriminator}`)
 			}
 		break;
 	}	
