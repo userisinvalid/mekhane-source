@@ -10,18 +10,13 @@ const Discord = require("discord.js");
 const request = require("request");
 const config = require("./config.json");
 const embedcolor = 13376265;
-const silserv = "SERV-ID"; // your server ID
-const devserv = "DEV-ID"; // for dev builds
-const owner = "BOT-OWNER"; // your user ID
 const client = new Discord.Client();
 const data = require("./data.json");
-const gnid = "GN-ROLE-ID"; //gamenight role ID
-const vid = "VER-ROLE-ID"; //verified ID 
 const nicknames = ["bonk", "bruh", "NO SPECIAL CHARACTERS", "edgelord", "meme thief", "cringe deluxe", "gen rule 7", "stupid", "standard name", "nickname", "generic preset"]; //add your own if you want
 var powered = "stale memes"
 var latest; //stores the latest gamenight message
 
-const help = `${config.prefixes.mekhane}help | `;
+const help = `${config.prefix}help | `;
 var fmsg = help + "wear a mask";
 
 
@@ -66,7 +61,7 @@ function verify(discid, chanid) { //verifies discord and roblox through eryn
 			let x = tryParseJSON(body);
 			if(x != false){
 				if(x.status == "ok"){
-					client.guilds.cache.get(silserv).members.cache.get(discid).roles.add(vid)
+					client.guilds.cache.get(config.server_id).members.cache.get(discid).roles.add(config.verified_role)
 					let vermsg = {
 						title: "Mekhane Verification",
 						description: `Verified as ${x.robloxUsername}`,
@@ -88,7 +83,7 @@ function verify(discid, chanid) { //verifies discord and roblox through eryn
 											text: `powered by ${powered}`
 										}
 									}
-									client.guilds.cache.get(silserv).channels.cache.get(chanid).send({embed: faildm})
+									client.guilds.cache.get(config.server_id).channels.cache.get(chanid).send({embed: faildm})
 								}
 								console.error(`failed to send verification DM to ${dem.username}#${dem.discriminator}`)
 							})
@@ -105,7 +100,7 @@ function verify(discid, chanid) { //verifies discord and roblox through eryn
 								text: `powered by ${powered}`
 							}
 						};
-						client.guilds.cache.get(silserv).channels.cache.get(chanid).send({embed: failmsg});
+						client.guilds.cache.get(config.server_id).channels.cache.get(chanid).send({embed: failmsg});
 					}
 				}
 			}
@@ -119,7 +114,7 @@ process.on('unhandledRejection', error => {
 
 client.on("guildBanRemove", function(gld, usr) {
 	if(banfind(usr.id) == true){
-		client.guilds.cache.get(silserv).members.ban(usr.id, "Scriptbanned, do not unban.") //done to counter corruption
+		client.guilds.cache.get(config.server_id).members.ban(usr.id, "Scriptbanned, do not unban.") //done to counter corruption
 	}
 })
 
@@ -130,7 +125,7 @@ client.on("ready", () => {
 
 client.on('guildMemberAdd', async member => {
 	if(member.user.bot) return;
-		client.users.fetch(owner).then(async own => {
+		client.users.fetch(config.owner).then(async own => {
 			let kickembed = {
 				title: "Mekhane Alt protection",
 				description: `You have been kicked from the server because your account age is less than 1 week old, this is to protect against alternate accounts. If you need urgent contact (such as a report), message \`${own.username}#${own.discriminator}\` and explain your situation.`,
@@ -193,14 +188,14 @@ client.on("message", async message => {
 		}
 	}
   	if(message.author.bot) return; //do not process bot messages
-  	if(message.content.indexOf(config.prefixes.mekhane) !== 0) return;
-  	const args = message.content.slice(config.prefixes.mekhane.length).trim().split(/ +/g); //command handler
+  	if(message.content.indexOf(config.prefix) !== 0) return;
+  	const args = message.content.slice(config.prefix.length).trim().split(/ +/g); //command handler
  	const command = args.shift().toLowerCase();
 	switch(command){
 		case "help":
 			let helpembed = {
 				title: "Mekhane Command list",
-				description: `Key: \`<field>\` is always needed, \`[field]\` is optional\nPrefix: \`${config.prefixes.mekhane}\``,
+				description: `Key: \`<field>\` is always needed, \`[field]\` is optional\nPrefix: \`${config.prefix}\``,
 				color: embedcolor,
 				footer: {
 				  text: `powered by ${powered}`
@@ -270,7 +265,7 @@ client.on("message", async message => {
 			}
 		break;
 		case "say":
-			if(message.author.id == owner) {
+			if(config.whitelist.includes(message.author.id)) {
 				let chan = args[0]
 				message.delete().catch(err=>{})
 				if(isNaN(chan)){
@@ -317,7 +312,7 @@ client.on("message", async message => {
 		break;
 		case "playmsg":
 			let msg = args.join(" ");
-			if(message.author.id == owner) {
+			if(config.whitelist.includes(message.author.id)) {
 				if(msg) {
 					client.user.setActivity(help + msg);
 				message.channel.send("\`PLAY MESSAGE UPDATED\`");
@@ -443,7 +438,7 @@ client.on("message", async message => {
 		break;
 		case "pwrmsg":
 			let pwr = args.join(" ");
-			if(message.author.id == owner) {
+			if(config.whitelist.includes(message.author.id)) {
 				if(pwr) {
 					powered = pwr;
 					message.channel.send("\`EMBED FOOTER MESSAGE UPDATED\`");
@@ -458,7 +453,7 @@ client.on("message", async message => {
 			let auth = message.member.roles.cache;
 			if(!(auth.has("AUTH-ID-1") || auth.has("AUTH-ID-2"))) return; // does the caller have authorization? you can add your own role IDs
 			let gnm = args.join(" ")
-			let gncache = client.guilds.cache.get(silserv).channels.cache // the channels
+			let gncache = client.guilds.cache.get(config.server_id).channels.cache // the channels
 			let gnchat = gncache.get("GN-CHAT-ID") // gamenight chat
 			let gncn = gncache.get("GN-ANN-ID") // gamenight announcement chat
 			if(!gnm){
@@ -471,15 +466,15 @@ client.on("message", async message => {
 				message.delete()
 				latest.delete()
 				message.channel.send(`Gamenight ended by ${message.author.username}#${message.author.discriminator}`)
-				gnchat.overwritePermissions([{id:vid, deny:["SEND_MESSAGES"]}])
+				gnchat.overwritePermissions([{id:config.verified_role, deny:["SEND_MESSAGES"]}])
 			} else {
 				message.delete();
-				gncn.send(`<@&${gnid}> ${gnm}`).then(msg => latest = msg)
-				gnchat.overwritePermissions([{id:vid, allow:["SEND_MESSAGES"]}])
+				gncn.send(`<@&${config.gamenight_role}> ${gnm}`).then(msg => latest = msg)
+				gnchat.overwritePermissions([{id:config.verified_role, allow:["SEND_MESSAGES"]}])
 				message.channel.send(`Gamenight started by ${message.author.username}#${message.author.discriminator}`)
 			}
 		break;
 	}	
 });
 
-client.login(config.tokens.mekhane); //log into discord
+client.login(config.token); //log into discord
