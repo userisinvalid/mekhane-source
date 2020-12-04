@@ -1,8 +1,0 @@
-{ 
-    "tokens"   : {
-        "mekhane": "YOUR-TOKEN-HERE"
-},
-    "prefixes" : {
-        "mekhane": "&"
-  }
-}

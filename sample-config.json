@@ -1,0 +1,16 @@
+{ 
+    "tokens"   :  "PUTYOURTOKENHERE",
+    "prefix" : "&",
+
+    "server_id" : "YOURSERVERIDHERE",
+    "devserver_id" : "YOURDEVSERVERIDHERE",
+
+    "owner" : "YOURIDHERE",
+
+    "whitelist" : [
+        "ID OF WHITELIST PEOPLE HERE"
+    ],
+
+    "gamenight_role" : "YOURGAMENIGHTROLEIDHERE",
+    "verified_role" : "YOURVERIFIEDROLEHERE"
+}
