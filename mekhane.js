@@ -45,8 +45,10 @@ function tryParseJSON(jsonString){ //used for whois, doesn't work without it som
     return false;
 };
 
-function specialname(input){ //checks if a name is nonstandard
-	let nick = input
+function specialname(nick){ //checks if a name is nonstandard
+	if(!nick){
+		return false
+	}
 	let nonstandard = nick.replace(/[\w-]/g, "")
 	if(nonstandard.length >= nick.length/2){ //check if half or more of the name is special
 		return true
