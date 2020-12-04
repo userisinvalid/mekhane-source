@@ -12,6 +12,9 @@ npm install discord.js
 npm install request
 ```
 
+## Important
+Rename ``sample-config.json`` to ``config.json`` and alter the values to your liking.
+
 ## License
 
 [MIT license](https://choosealicense.com/licenses/mit/)
