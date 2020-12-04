@@ -1,3 +1,6 @@
+# Mekhane specific ignores
+config.json
+
 # Logs
 logs
 *.log
