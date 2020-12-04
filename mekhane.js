@@ -1,11 +1,13 @@
 /*
+	|Mekhane|
+	Made by userisinvalid
+
+	Licensed under the MIT license
 
 	The source code for this bot is unoptimized and sometimes unstable. Use and modify at your own risk. 
 	Some IDs need to be changed for the bot to work, please check very carefully before starting.
-	
-	Check the data.json and config.json files before starting. Place your bot token in config.json and set a prefix.
-
 */
+
 const Discord = require("discord.js");
 const request = require("request");
 const config = require("./config.json");
